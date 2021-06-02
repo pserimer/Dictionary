@@ -1,19 +1,63 @@
 package com.dictionary.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.UUID;
+
+@Entity
+@Table(schema = "DICTIONARY", name = "WORD")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Word {
+@EqualsAndHashCode(callSuper = false, of = {})
+@ToString(callSuper = true, of = {})
+public class Word extends BaseModel {
 
-    public String wordId;
+    // Attributes of word class
 
-    public String turkish;
+    @Column(name = "TURKISH")
+    private String turkish;
 
-    public String english;
+    @Column(name = "ENGLISH")
+    private String english;
+
+    // Constructors for word class
+
+    public Word() {
+    }
+
+    public Word(String tr, String en) {
+        this.setUuid(UUID.randomUUID().toString());
+        this.turkish = tr;
+        this.english = en;
+    }
+
+    public Word(Word word) {
+        this.setUuid(UUID.randomUUID().toString());
+        this.turkish = word.getTurkish();
+        this.english = word.getEnglish();
+    }
+
+    // Getters and setters for attributes
+
+    public String getTurkish() {
+        return turkish;
+    }
+
+    public void setTurkish(String turkish) {
+        this.turkish = turkish;
+    }
+
+    public String getEnglish() {
+        return english;
+    }
+
+    public void setEnglish(String english) {
+        this.english = english;
+    }
 
 }
 
