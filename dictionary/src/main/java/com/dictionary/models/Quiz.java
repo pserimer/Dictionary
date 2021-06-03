@@ -7,7 +7,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -40,7 +41,7 @@ public class Quiz extends BaseModel {
             joinColumns = {@JoinColumn(name = "QUIZ_ID", foreignKey = @ForeignKey(name = "FK_QUIZ_QUESTIONS_QUIZ_ID"))},
             inverseJoinColumns = {@JoinColumn(name = "QUESTION_ID", foreignKey = @ForeignKey(name = "FK_QUIZ_QUESTIONS_QUESTION_ID"))}
     )
-    private ArrayList<Question> questions;
+    private Set<Question> questions = new HashSet<>();
 
     // Constructors for word class
 

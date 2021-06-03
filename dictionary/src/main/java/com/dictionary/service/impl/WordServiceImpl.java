@@ -1,8 +1,10 @@
 package com.dictionary.service.impl;
 
 import com.dictionary.models.Word;
+import com.dictionary.models.dao.WordDao;
 import com.dictionary.service.WordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,16 +22,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class WordServiceImpl implements WordService {
 
+    @Autowired
+    WordDao wordDao;
+
     @Override
     public List<Word> listAllWords() {
-        return null;
+        return wordDao.findAll();
     }
 
     @Override
     public Word saveWord(Word word) {
-        word.setWordId(UUID.randomUUID().toString());
-
-        return word;
+        word.setUuid(UUID.randomUUID().toString());
+        return wordDao.saveAndFlush(word);
     }
 
     @Override
@@ -82,6 +86,6 @@ public class WordServiceImpl implements WordService {
 
     @Override
     public void deleteWord(String wordId) {
-
+        wordDao.deleteByUuid(wordId);
     }
 }

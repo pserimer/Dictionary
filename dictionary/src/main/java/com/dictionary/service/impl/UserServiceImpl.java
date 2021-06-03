@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         User retrievedUser = findUserByEmail(email);
         if (user.getBestScore() != null)
             retrievedUser.setBestScore(user.getBestScore());
-        if (StringUtils.isNotEmpty(user.getNoOfWordsSearched()))
+        if (user.getNoOfWordsSearched() != null)
             retrievedUser.setNoOfWordsSearched(user.getNoOfWordsSearched());
         if (CollectionUtils.isNotEmpty(user.getWords()))
             retrievedUser.setWords(user.getWords());

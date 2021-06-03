@@ -12,7 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@Controller("/api/quiz")
+@Controller
+@RequestMapping("/api/quiz")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class QuizController {
 

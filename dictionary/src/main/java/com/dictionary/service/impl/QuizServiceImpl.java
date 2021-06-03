@@ -25,7 +25,7 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public Quiz generateQuiz() {
         Quiz quiz = new Quiz();
-        quiz.setQuizId(UUID.randomUUID().toString());
+        quiz.setUuid(UUID.randomUUID().toString());
         quiz.setTakenAt(ZonedDateTime.now());
 
         Random rand = new Random();

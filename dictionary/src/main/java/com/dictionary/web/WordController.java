@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.IOException;
 
+@Controller
 @RequiredArgsConstructor
-@Controller("/api/word")
+@RequestMapping("/api/word")
 public class WordController {
 
     private final WordService wordService;
