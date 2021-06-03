@@ -1,12 +1,11 @@
 package com.dictionary.models;
 
+import com.dictionary.base.BaseModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -35,7 +34,12 @@ public class Quiz extends BaseModel {
     @Column(name = "TAKEN_AT")
     private ZonedDateTime takenAt;
 
-    //TODO: new table for relation
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            schema = "DICTIONARY", name = "QUIZ_QUESTIONS",
+            joinColumns = {@JoinColumn(name = "QUIZ_ID", foreignKey = @ForeignKey(name = "FK_QUIZ_QUESTIONS_QUIZ_ID"))},
+            inverseJoinColumns = {@JoinColumn(name = "QUESTION_ID", foreignKey = @ForeignKey(name = "FK_QUIZ_QUESTIONS_QUESTION_ID"))}
+    )
     private ArrayList<Question> questions;
 
     // Constructors for word class

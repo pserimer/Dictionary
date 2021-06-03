@@ -1,5 +1,6 @@
 package com.dictionary.models;
 
+import com.dictionary.base.BaseModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

@@ -1,17 +1,16 @@
 package com.dictionary.models;
 
+import com.dictionary.base.BaseModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "DICTIONARY", name = "users")
+@Table(schema = "DICTIONARY", name = "USERS")
 @Data
 @EqualsAndHashCode(callSuper = false, of = {})
 @ToString(callSuper = true, of = {})
@@ -34,10 +33,20 @@ public class User extends BaseModel {
     @Column(name = "NUM_OF_SEARCHED_WORDS")
     private Integer noOfWordsSearched;
 
-    //TODO: new table for relation
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            schema = "DICTIONARY", name = "USER_WORDS",
+            joinColumns = {@JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "FK_USER_WORDS_USER_ID"))},
+            inverseJoinColumns = {@JoinColumn(name = "WORD_ID", foreignKey = @ForeignKey(name = "FK_USER_WORDS_WORD_ID"))}
+    )
     private ArrayList<Word> words = new ArrayList<>();
 
-    //TODO: new table for relation
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            schema = "DICTIONARY", name = "USER_QUIZZES",
+            joinColumns = {@JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "FK_USER_QUIZZES_USER_ID"))},
+            inverseJoinColumns = {@JoinColumn(name = "QUIZ_ID", foreignKey = @ForeignKey(name = "FK_USER_QUIZZES_QUIZ_ID"))}
+    )
     private ArrayList<Quiz> quizzes = new ArrayList<>();
 
     // Constructors for user class
