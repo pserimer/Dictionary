@@ -31,12 +31,6 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
-    public Word saveWord(Word word) {
-        word.setUuid(UUID.randomUUID().toString());
-        return wordDao.saveAndFlush(word);
-    }
-
-    @Override
     public Word translateToTurkish(Word word) throws IOException {
         String urlStr = "https://script.google.com/macros/s/AKfycbxgCdZdIad69eqprFuLdgLFtDj9SbsrRvjn1QGIbHnW6heuZxuaVREAVmzibmRdTMiR/exec" +
                 "?q=" + URLEncoder.encode(word.getEnglish(), "UTF-8") +
@@ -56,8 +50,9 @@ public class WordServiceImpl implements WordService {
         }
         in.close();
 
+        word.setUuid(UUID.randomUUID().toString());
         word.setTurkish(response.toString());
-        return word;
+        return wordDao.saveAndFlush(word);
     }
 
     @Override
@@ -80,8 +75,9 @@ public class WordServiceImpl implements WordService {
         }
         in.close();
 
+        word.setUuid(UUID.randomUUID().toString());
         word.setEnglish(response.toString());
-        return word;
+        return wordDao.saveAndFlush(word);
     }
 
     @Override

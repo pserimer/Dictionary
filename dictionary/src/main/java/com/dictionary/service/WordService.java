@@ -10,8 +10,6 @@ public interface WordService {
 
     List<Word> listAllWords();
 
-    Word saveWord(Word word);
-
     Word translateToTurkish(Word word) throws IOException;
 
     Word translateToEnglish(Word word) throws IOException;

@@ -20,14 +20,6 @@ public class WordController {
 
     private final WordService wordService;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Word> saveWord(@RequestBody Word word) {
-        return new ResponseEntity<>(
-                wordService.saveWord(word),
-                HttpStatus.OK
-        );
-    }
-
     @RequestMapping(value = "/translate-turkish", method = RequestMethod.POST)
     public ResponseEntity<Word> translateToTurkish(@RequestBody Word word) throws IOException {
         return new ResponseEntity<>(
