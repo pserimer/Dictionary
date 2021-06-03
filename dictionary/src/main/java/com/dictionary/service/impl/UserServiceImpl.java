@@ -10,6 +10,7 @@ import com.dictionary.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +19,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private PasswordEncoder passwordEncoder;
+
     @Override
-    public User findUserByEmail(String email) {
-        //TODO: find user from database
-        return null;
+    public User findUserByEmail(String username) {
+        if (StringUtils.isBlank(username)){
+            return null;
+        } else {
+            User user =  new User(username,
+                    passwordEncoder.encode("secret"));
+            return user;
+        }
     }
 
     @Override

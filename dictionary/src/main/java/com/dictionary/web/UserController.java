@@ -6,6 +6,7 @@
 package com.dictionary.web;
 
 import com.dictionary.service.UserService;
+import org.springframework.security.core.Authentication;
 import com.dictionary.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,9 @@ public class UserController {
     private final UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<User> findUsersOwnProfile(Principal principal) {
+    public ResponseEntity<User> findUsersOwnProfile(Authentication authentication) {
         return new ResponseEntity<>(
-                userService.findUserByEmail(principal.getName()),
+                userService.findUserByEmail(authentication.getName()),
                 HttpStatus.OK
         );
     }
