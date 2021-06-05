@@ -42,7 +42,7 @@ public class WordController {
     }
 
     @RequestMapping(path = "/{wordId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteWord(@PathVariable String wordId) {
+    public ResponseEntity<Void> deleteWord(@PathVariable Long wordId) {
         wordService.deleteWord(wordId);
         return new ResponseEntity<>(
                 HttpStatus.NO_CONTENT

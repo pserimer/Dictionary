@@ -18,5 +18,5 @@ public interface WordService {
 
     Word translateToEnglish(Word word) throws IOException;
 
-    void deleteWord(String wordId);
+    void deleteWord(Long wordId);
 }

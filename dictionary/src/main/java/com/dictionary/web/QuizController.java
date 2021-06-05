@@ -33,7 +33,7 @@ public class QuizController {
     }
 
     @RequestMapping(path = "/{quizId}", method = RequestMethod.PUT)
-    public ResponseEntity<Quiz> finishQuiz(@PathVariable String quizId, @RequestBody Quiz quiz) {
+    public ResponseEntity<Quiz> finishQuiz(@PathVariable Long quizId, @RequestBody Quiz quiz) {
         return new ResponseEntity<>(
                 quizService.finishQuiz(quizId, quiz),
                 HttpStatus.OK
@@ -41,7 +41,7 @@ public class QuizController {
     }
 
     @RequestMapping(path = "/{quizId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteQuiz(@PathVariable String quizId) {
+    public ResponseEntity<Void> deleteQuiz(@PathVariable Long quizId) {
         quizService.deleteQuiz(quizId);
         return new ResponseEntity<>(
                 HttpStatus.NO_CONTENT

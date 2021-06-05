@@ -7,13 +7,18 @@ package com.dictionary.service.impl;
 
 import com.dictionary.models.Question;
 import com.dictionary.models.Quiz;
+import com.dictionary.models.dao.QuizDao;
+import com.dictionary.models.dao.WordDao;
 import com.dictionary.service.QuestionService;
 import com.dictionary.service.QuizService;
 import com.dictionary.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.proxy.EntityNotFoundDelegate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.ZonedDateTime;
 import java.util.Random;
 import java.util.UUID;
@@ -27,10 +32,12 @@ public class QuizServiceImpl implements QuizService {
 
     private final QuestionService questionRepository;
 
+    @Autowired
+    QuizDao quizDao;
+
     @Override
     public Quiz generateQuiz() {
         Quiz quiz = new Quiz();
-        quiz.setUuid(UUID.randomUUID().toString());
         quiz.setTakenAt(ZonedDateTime.now());
 
         Random rand = new Random();
@@ -49,14 +56,12 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public Quiz findQuiz(String quizId) {
-        //TODO: find quiz from database
-
-        return null;
+    public Quiz findQuiz(Long quizId) {
+        return quizDao.findById(quizId).orElseThrow(() -> new EntityNotFoundException("Quiz not found"));
     }
 
     @Override
-    public Quiz finishQuiz(String quizId, Quiz quiz) {
+    public Quiz finishQuiz(Long quizId, Quiz quiz) {
         Quiz retrievedQuiz = findQuiz(quizId);
 
         for (Question question : quiz.getQuestions()) {
@@ -89,18 +94,17 @@ public class QuizServiceImpl implements QuizService {
         retrievedQuiz.setEmpty(quiz.getEmpty());
         retrievedQuiz.setScore((quiz.getCorrect() * 2.0));
 
-        //TODO: update database with retrievedQuiz
+        return quizDao.saveAndFlush(retrievedQuiz);
 
         //User currentUser = userRepository.findUserByEmail(/*Principal principal.getName()*/))
         /*if (currentUser.getScore < quiz.getScore())
             user.setBestScore(quiz.getScore());
         userRepository.updateUser(currentUser.getEmail(), user);*/
 
-        return retrievedQuiz;
     }
 
     @Override
-    public void deleteQuiz(String quizId) {
-
+    public void deleteQuiz(Long quizId) {
+        quizDao.deleteById(quizId);
     }
 }

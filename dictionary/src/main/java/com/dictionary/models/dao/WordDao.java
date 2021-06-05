@@ -10,6 +10,4 @@ import com.dictionary.models.Word;
 
 public interface WordDao extends BaseDao<Word> {
 
-    void deleteByUuid(String uuid);
-
 }

@@ -55,7 +55,6 @@ public class WordServiceImpl implements WordService {
         }
         in.close();
 
-        word.setUuid(UUID.randomUUID().toString());
         word.setTurkish(response.toString());
         return wordDao.saveAndFlush(word);
     }
@@ -80,13 +79,12 @@ public class WordServiceImpl implements WordService {
         }
         in.close();
 
-        word.setUuid(UUID.randomUUID().toString());
         word.setEnglish(response.toString());
         return wordDao.saveAndFlush(word);
     }
 
     @Override
-    public void deleteWord(String wordId) {
-        wordDao.deleteByUuid(wordId);
+    public void deleteWord(Long wordId) {
+        wordDao.deleteById(wordId);
     }
 }

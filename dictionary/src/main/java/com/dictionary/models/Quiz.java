@@ -54,7 +54,6 @@ public class Quiz extends BaseModel {
     }
 
     public Quiz(int correct, int incorrect, int empty, double score) {
-        this.setUuid(UUID.randomUUID().toString());
         this.correct = correct;
         this.incorrect = incorrect;
         this.empty = empty;
@@ -63,7 +62,6 @@ public class Quiz extends BaseModel {
     }
 
     public Quiz(Quiz quiz) {
-        this.setUuid(UUID.randomUUID().toString());
         this.correct = quiz.getCorrect();
         this.incorrect = quiz.getIncorrect();
         this.empty = quiz.getEmpty();

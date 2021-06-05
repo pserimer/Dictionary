@@ -5,5 +5,8 @@
 
 package com.dictionary.models.dao;
 
-public interface QuestionDao {
+import com.dictionary.base.BaseDao;
+import com.dictionary.models.Question;
+
+public interface QuestionDao extends BaseDao<Question> {
 }

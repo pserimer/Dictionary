@@ -5,5 +5,9 @@
 
 package com.dictionary.models.dao;
 
-public interface UserDao {
+import com.dictionary.base.BaseDao;
+import com.dictionary.models.User;
+
+public interface UserDao extends BaseDao<User> {
+
 }

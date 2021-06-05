@@ -7,9 +7,11 @@ package com.dictionary.service.impl;
 
 import com.dictionary.models.Question;
 import com.dictionary.models.Word;
+import com.dictionary.models.dao.QuestionDao;
 import com.dictionary.service.QuestionService;
 import com.dictionary.service.WordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,9 @@ import java.util.Random;
 public class QuestionServiceImpl implements QuestionService {
 
     private final WordService wordService;
+
+    @Autowired
+    QuestionDao questionDao;
 
     @Override
     public Question createQuestionForEnglish() {
@@ -62,7 +67,7 @@ public class QuestionServiceImpl implements QuestionService {
             question.setPosAnsC(words.get(0).getEnglish());
         }
 
-        return question;
+        return questionDao.saveAndFlush(question);
     }
 
     @Override
@@ -102,6 +107,6 @@ public class QuestionServiceImpl implements QuestionService {
             question.setPosAnsC(words.get(0).getTurkish());
         }
 
-        return question;
+        return questionDao.saveAndFlush(question);
     }
 }

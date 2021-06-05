@@ -11,10 +11,10 @@ public interface QuizService {
 
     Quiz generateQuiz(); // generate quiz
 
-    Quiz findQuiz(String quizId);
+    Quiz findQuiz(Long quizId);
 
-    Quiz finishQuiz(String quizId, Quiz quiz); // update score of the finished quiz
+    Quiz finishQuiz(Long quizId, Quiz quiz); // update score of the finished quiz
 
-    void deleteQuiz(String quizId);
+    void deleteQuiz(Long quizId);
 
 }

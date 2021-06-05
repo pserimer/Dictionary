@@ -36,13 +36,11 @@ public class Word extends BaseModel {
     }
 
     public Word(String tr, String en) {
-        this.setUuid(UUID.randomUUID().toString());
         this.turkish = tr;
         this.english = en;
     }
 
     public Word(Word word) {
-        this.setUuid(UUID.randomUUID().toString());
         this.turkish = word.getTurkish();
         this.english = word.getEnglish();
     }

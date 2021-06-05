@@ -6,10 +6,12 @@
 package com.dictionary.service.impl;
 
 import com.dictionary.models.User;
+import com.dictionary.models.dao.UserDao;
 import com.dictionary.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    UserDao userDao;
 
     @Override
     public User findUserByEmail(String username) {
@@ -34,8 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
-        //TODO: save user
-        return user;
+        return userDao.saveAndFlush(user);
     }
 
     @Override
@@ -47,13 +51,13 @@ public class UserServiceImpl implements UserService {
             retrievedUser.setNoOfWordsSearched(user.getNoOfWordsSearched());
         if (CollectionUtils.isNotEmpty(user.getWords()))
             retrievedUser.setWords(user.getWords());
-        //TODO: update user
-        return retrievedUser;
+
+        return userDao.saveAndFlush(retrievedUser);
     }
 
     @Override
     public void deleteUser(String email) {
         User user = findUserByEmail(email);
-        // TODO: delete user
+        userDao.deleteById(user.getId());
     }
 }

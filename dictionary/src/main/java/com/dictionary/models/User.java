@@ -67,14 +67,12 @@ public class User extends BaseModel {
     }
 
     public User(String username, String password, String email) {
-        this.setUuid(UUID.randomUUID().toString());
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
     public User(User user) {
-        this.setUuid(UUID.randomUUID().toString());
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.password = user.getPassword();

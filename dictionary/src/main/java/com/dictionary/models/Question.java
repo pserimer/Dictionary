@@ -48,7 +48,6 @@ public class Question extends BaseModel {
     }
 
     public Question(Question question) {
-        this.setUuid(UUID.randomUUID().toString());
         this.question = question.getQuestion();
         this.posAnsA = question.getPosAnsA();
         this.posAnsB = question.getPosAnsB();
