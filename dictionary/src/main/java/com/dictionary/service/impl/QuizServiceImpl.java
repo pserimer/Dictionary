@@ -38,16 +38,12 @@ public class QuizServiceImpl implements QuizService {
         quiz.setTakenAt(ZonedDateTime.now());
 
         Random rand = new Random();
-        int ctrl;
+        int ctrl = rand.nextInt(2);
 
-        for (int i = 0; i < 5 ; i++) {
-            ctrl = rand.nextInt(2);
-
-            if (ctrl == 1)
-                quiz.getQuestions().add(questionRepository.createQuestionForEnglish());
-            else
-                quiz.getQuestions().add(questionRepository.createQuestionForTurkish());
-        }
+        if (ctrl == 1)
+            quiz.setQuestions(questionRepository.createQuestionsForEnglish());
+        else
+            quiz.setQuestions(questionRepository.createQuestionsForTurkish());
 
         return quiz;
     }
