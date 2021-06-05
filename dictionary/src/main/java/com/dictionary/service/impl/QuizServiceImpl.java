@@ -8,12 +8,10 @@ package com.dictionary.service.impl;
 import com.dictionary.models.Question;
 import com.dictionary.models.Quiz;
 import com.dictionary.models.dao.QuizDao;
-import com.dictionary.models.dao.WordDao;
 import com.dictionary.service.QuestionService;
 import com.dictionary.service.QuizService;
 import com.dictionary.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.proxy.EntityNotFoundDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.time.ZonedDateTime;
 import java.util.Random;
-import java.util.UUID;
 
 @Service
 @Transactional

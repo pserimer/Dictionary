@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,6 +25,14 @@ import java.io.IOException;
 public class WordController {
 
     private final WordService wordService;
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<Word>> generateQuiz() {
+        return new ResponseEntity<>(
+                wordService.listAllWords(),
+                HttpStatus.OK
+        );
+    }
 
     @RequestMapping(value = "/translate-turkish", method = RequestMethod.POST)
     public ResponseEntity<Word> translateToTurkish(@RequestBody Word word) throws IOException {

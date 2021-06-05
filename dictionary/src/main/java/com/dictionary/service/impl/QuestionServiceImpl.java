@@ -67,7 +67,7 @@ public class QuestionServiceImpl implements QuestionService {
             question.setPosAnsC(words.get(0).getEnglish());
         }
 
-        return questionDao.saveAndFlush(question);
+        return question;
     }
 
     @Override
@@ -107,6 +107,6 @@ public class QuestionServiceImpl implements QuestionService {
             question.setPosAnsC(words.get(0).getTurkish());
         }
 
-        return questionDao.saveAndFlush(question);
+        return question;
     }
 }
