@@ -5,14 +5,14 @@
 
 package com.dictionary.web;
 
-import com.dictionary.service.UserService;
-import org.springframework.security.core.Authentication;
 import com.dictionary.models.User;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import com.dictionary.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,6 +38,22 @@ public class UserController {
     public ResponseEntity<User> saveUser(@RequestBody User user) {
         return new ResponseEntity<>(
                 userService.saveUser(user),
+                HttpStatus.OK
+        );
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity<User> register(@RequestBody User user) throws Exception {
+        return new ResponseEntity<>(
+                userService.register(user),
+                HttpStatus.OK
+        );
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<String> login(@RequestBody User user) throws Exception {
+        return new ResponseEntity<>(
+                userService.login(user),
                 HttpStatus.OK
         );
     }

@@ -5,14 +5,15 @@
 
 package com.dictionary.service.impl;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.dictionary.models.User;
 import com.dictionary.models.dao.UserDao;
 import com.dictionary.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,25 +22,54 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private PasswordEncoder passwordEncoder;
+    private final String SECRET = "secretKey";
+
+    private final String salt = BCrypt.gensalt("$2b", 5);
 
     @Autowired
     UserDao userDao;
 
     @Override
-    public User findUserByEmail(String username) {
-        if (StringUtils.isBlank(username)){
-            return null;
-        } else {
-            User user =  new User(username,
-                    passwordEncoder.encode("secret"));
-            return user;
-        }
+    public User findUserByEmail(String email) {
+        return userDao.findUserByEmail(email);
     }
 
     @Override
     public User saveUser(User user) {
         return userDao.saveAndFlush(user);
+    }
+
+    @Override
+    public User register(User user) throws Exception {
+        User emailControl = userDao.findUserByEmail(user.getEmail());
+
+        if (emailControl == null) {
+            User newUser = new User();
+            newUser.setUsername(user.getUsername());
+            newUser.setEmail(user.getEmail());
+
+            newUser.setPassword(BCrypt.hashpw(user.getPassword(), salt));
+
+            return userDao.saveAndFlush(newUser);
+        }
+
+        throw new Exception("cannot use this email");
+    }
+
+    @Override
+    public String login(User user) throws Exception {
+        String userInfo = user.getEmail() == null ? user.getUsername() : user.getEmail();
+        User userControl = findUserByEmail(user.getUsername());
+
+        if (userControl != null) {
+            if (BCrypt.checkpw(user.getPassword(), userControl.getPassword())) {
+                String accessToken = JWT.create()
+                        .withSubject(userControl.getUsername())
+                        .sign(Algorithm.HMAC512(SECRET.getBytes()));
+
+                return accessToken;
+            } else throw new Exception("mismatch");
+        } else throw new Exception("user not found");
     }
 
     @Override

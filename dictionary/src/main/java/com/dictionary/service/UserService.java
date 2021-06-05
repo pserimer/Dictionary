@@ -9,9 +9,13 @@ import com.dictionary.models.User;
 
 public interface UserService {
 
-    User findUserByEmail(String email); //for login
+    User findUserByEmail(String email);
 
     User saveUser(User user);
+
+    User register(User user) throws Exception;
+
+    String login(User user) throws Exception;
 
     User updateUser(String email, User user);
 
