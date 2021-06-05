@@ -6,7 +6,6 @@
 create table dictionary.users
 (
     id                    int generated always as identity primary key,
-    uuid                  varchar(255) not null,
     username              varchar(255) not null,
     email                 varchar(255) not null,
     password              varchar(255) not null,
@@ -17,7 +16,6 @@ create table dictionary.users
 create table dictionary.word
 (
     id      int generated always as identity primary key,
-    uuid    varchar(255) not null,
     turkish varchar(255) not null,
     english varchar(255) not null
 );
@@ -25,7 +23,6 @@ create table dictionary.word
 create table dictionary.quiz
 (
     id        int generated always as identity primary key,
-    uuid      varchar(255) not null,
     correct   int,
     incorrect int,
     empty     int,
@@ -36,7 +33,6 @@ create table dictionary.quiz
 create table dictionary.question
 (
     id       int generated always as identity primary key,
-    uuid     varchar(255) not null,
     question varchar(255) not null,
     posAnsA  varchar(255),
     posAnsB  varchar(255),
