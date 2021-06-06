@@ -8,6 +8,7 @@ package com.dictionary.service.impl;
 import com.dictionary.models.Question;
 import com.dictionary.models.Quiz;
 import com.dictionary.models.User;
+import com.dictionary.models.dao.QuestionDao;
 import com.dictionary.models.dao.QuizDao;
 import com.dictionary.service.QuestionService;
 import com.dictionary.service.QuizService;
@@ -39,6 +40,9 @@ public class QuizServiceImpl implements QuizService {
     @Autowired
     QuizDao quizDao;
 
+    @Autowired
+    QuestionDao questionDao;
+
     @Override
     public Quiz generateQuiz() {
         Quiz quiz = new Quiz();
@@ -60,9 +64,7 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public Quiz finishQuiz(Long quizId, Quiz quiz) {
-        Quiz retrievedQuiz = findQuiz(quizId);
-
+    public Quiz finishQuiz(Quiz quiz) {
         for (Question question : quiz.getQuestions()) {
             if ("a".equals(question.getSelected())) {
                 if (question.getPosAnsA().equals(question.getAnswer()))
@@ -88,12 +90,16 @@ public class QuizServiceImpl implements QuizService {
                 quiz.setEmpty(quiz.getEmpty() + 1);
         }
 
-        retrievedQuiz.setCorrect(quiz.getCorrect());
-        retrievedQuiz.setIncorrect(quiz.getIncorrect());
-        retrievedQuiz.setEmpty(quiz.getEmpty());
-        retrievedQuiz.setScore((quiz.getCorrect() * 2.0));
+        quiz.setCorrect(quiz.getCorrect());
+        quiz.setIncorrect(quiz.getIncorrect());
+        quiz.setEmpty(quiz.getEmpty());
+        quiz.setScore((quiz.getCorrect() * 2.0));
 
-        return quizDao.saveAndFlush(retrievedQuiz);
+        for (Question question : quiz.getQuestions()) {
+            questionDao.saveAndFlush(question);
+        }
+
+        return quizDao.saveAndFlush(quiz);
 
         /*User currentUser = userService.findUserByEmail();
         if (currentUser.getScore < quiz.getScore())

@@ -26,13 +26,13 @@ public class Question extends BaseModel {
     @Column(name = "QUESTION")
     private String question;
 
-    @Column(name = "posAnsA")
+    @Column(name = "POSANSA")
     private String posAnsA;
 
-    @Column(name = "posAnsB")
+    @Column(name = "POSANSB")
     private String posAnsB;
 
-    @Column(name = "posAnsC")
+    @Column(name = "POSANSC")
     private String posAnsC;
 
     @Column(name = "SELECTED")

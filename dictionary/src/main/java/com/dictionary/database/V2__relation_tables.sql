@@ -27,7 +27,7 @@ create table user_quizzes
             REFERENCES dictionary.quiz (id)
 );
 
-create table quiz_question
+create table quiz_questions
 (
     quiz_id     int not null,
     question_id int not null,
