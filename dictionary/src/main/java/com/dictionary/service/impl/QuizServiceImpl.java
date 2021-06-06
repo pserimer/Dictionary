@@ -100,8 +100,10 @@ public class QuizServiceImpl implements QuizService {
         }
 
         User currentUser = userService.findUserByEmail(email);
+
         if (currentUser.getBestScore() < quiz.getScore())
             currentUser.setBestScore(quiz.getScore());
+
         userService.updateUser(currentUser.getEmail(), currentUser);
 
         return quizDao.saveAndFlush(quiz);
