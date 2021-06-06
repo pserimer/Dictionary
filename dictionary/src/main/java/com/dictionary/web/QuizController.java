@@ -32,10 +32,10 @@ public class QuizController {
         );
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Quiz> finishQuiz(@RequestBody Quiz quiz) {
+    @RequestMapping(path = "/{email}", method = RequestMethod.POST)
+    public ResponseEntity<Quiz> finishQuiz(@PathVariable String email, @RequestBody Quiz quiz) {
         return new ResponseEntity<>(
-                quizService.finishQuiz(quiz),
+                quizService.finishQuiz(quiz, email),
                 HttpStatus.OK
         );
     }

@@ -11,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,10 +24,10 @@ public class UserController {
 
     private final UserService userService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<User> findUsersOwnProfile(Authentication authentication) {
+    @RequestMapping(path = "/{email}", method = RequestMethod.GET)
+    public ResponseEntity<User> findUsersOwnProfile(@PathVariable String email) {
         return new ResponseEntity<>(
-                userService.findUserByEmail(authentication.getName()),
+                userService.findUserByEmail(email),
                 HttpStatus.OK
         );
     }
@@ -48,17 +48,17 @@ public class UserController {
         );
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<User> updateUser(Authentication authentication, @RequestBody User user) {
+    @RequestMapping(path = "/{email}", method = RequestMethod.PUT)
+    public ResponseEntity<User> updateUser(@PathVariable String email, @RequestBody User user) {
         return new ResponseEntity<>(
-                userService.updateUser(authentication.getName(), user),
+                userService.updateUser(email, user),
                 HttpStatus.OK
         );
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteUser(Authentication authentication) {
-        userService.deleteUser(authentication.getName());
+    @RequestMapping(path = "/{email}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
+        userService.deleteUser(email);
         return new ResponseEntity<>(
                 HttpStatus.NO_CONTENT
         );

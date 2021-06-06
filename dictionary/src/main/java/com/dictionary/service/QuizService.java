@@ -13,7 +13,7 @@ public interface QuizService {
 
     Quiz findQuiz(Long quizId);
 
-    Quiz finishQuiz(Quiz quiz); // update score of the finished quiz
+    Quiz finishQuiz(Quiz quiz, String email); // update score of the finished quiz
 
     void deleteQuiz(Long quizId);
 

@@ -64,7 +64,7 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public Quiz finishQuiz(Quiz quiz) {
+    public Quiz finishQuiz(Quiz quiz, String email) {
         for (Question question : quiz.getQuestions()) {
             if ("a".equals(question.getSelected())) {
                 if (question.getPosAnsA().equals(question.getAnswer()))
@@ -99,13 +99,12 @@ public class QuizServiceImpl implements QuizService {
             questionDao.saveAndFlush(question);
         }
 
-        return quizDao.saveAndFlush(quiz);
-
-        /*User currentUser = userService.findUserByEmail();
-        if (currentUser.getScore < quiz.getScore())
+        User currentUser = userService.findUserByEmail(email);
+        if (currentUser.getBestScore() < quiz.getScore())
             currentUser.setBestScore(quiz.getScore());
-        userService.updateUser(currentUser.getEmail(), currentUser);*/
+        userService.updateUser(currentUser.getEmail(), currentUser);
 
+        return quizDao.saveAndFlush(quiz);
     }
 
     @Override
