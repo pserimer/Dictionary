@@ -11,8 +11,6 @@ public interface UserService {
 
     User findUserByEmail(String email);
 
-    User saveUser(User user);
-
     User register(User user) throws Exception;
 
     String login(User user) throws Exception;

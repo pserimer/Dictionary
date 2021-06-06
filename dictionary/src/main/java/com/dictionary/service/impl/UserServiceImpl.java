@@ -35,17 +35,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUser(User user) {
-        return userDao.saveAndFlush(user);
-    }
-
-    @Override
     public User register(User user) throws Exception {
         User emailControl = userDao.findUserByEmail(user.getEmail());
 
         if (emailControl == null) {
             User newUser = new User();
-            newUser.setUsername(user.getUsername());
             newUser.setEmail(user.getEmail());
 
             newUser.setPassword(BCrypt.hashpw(user.getPassword(), salt));
@@ -58,13 +52,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(User user) throws Exception {
-        String userInfo = user.getEmail() == null ? user.getUsername() : user.getEmail();
-        User userControl = findUserByEmail(user.getUsername());
+        User userControl = findUserByEmail(user.getEmail());
 
         if (userControl != null) {
             if (BCrypt.checkpw(user.getPassword(), userControl.getPassword())) {
                 String accessToken = JWT.create()
-                        .withSubject(userControl.getUsername())
+                        .withSubject(user.getEmail())
                         .sign(Algorithm.HMAC512(SECRET.getBytes()));
 
                 return accessToken;

@@ -6,7 +6,6 @@
 create table dictionary.users
 (
     id                    int generated always as identity primary key,
-    username              varchar(255) not null,
     email                 varchar(255) not null,
     password              varchar(255) not null,
     best_score            double precision,

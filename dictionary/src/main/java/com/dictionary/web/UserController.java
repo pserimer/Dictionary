@@ -32,14 +32,6 @@ public class UserController {
         );
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<User> saveUser(@RequestBody User user) {
-        return new ResponseEntity<>(
-                userService.saveUser(user),
-                HttpStatus.OK
-        );
-    }
-
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<User> register(@RequestBody User user) throws Exception {
         return new ResponseEntity<>(

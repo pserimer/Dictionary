@@ -30,9 +30,6 @@ public class User extends BaseModel {
 
     // Attributes of user class
 
-    @Column(name = "USERNAME")
-    private String username;
-
     @Column(name = "EMAIL")
     private String email;
 
@@ -66,19 +63,12 @@ public class User extends BaseModel {
     public User() {
     }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public User(String username, String password, String email) {
-        this.username = username;
+    public User(String password, String email) {
         this.email = email;
         this.password = password;
     }
 
     public User(User user) {
-        this.username = user.getUsername();
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.bestScore = user.getBestScore();
@@ -86,14 +76,6 @@ public class User extends BaseModel {
     }
 
     // Getters and setters for attributes
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getEmail() {
         return email;
