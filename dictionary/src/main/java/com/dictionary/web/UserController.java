@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.security.Principal;
-
 @Controller
 @RequestMapping("/api/user")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -59,16 +57,16 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<User> updateUser(Principal principal, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(Authentication authentication, @RequestBody User user) {
         return new ResponseEntity<>(
-                userService.updateUser(principal.getName(), user),
+                userService.updateUser(authentication.getName(), user),
                 HttpStatus.OK
         );
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteUser(Principal principal) {
-        userService.deleteUser(principal.getName());
+    public ResponseEntity<Void> deleteUser(Authentication authentication) {
+        userService.deleteUser(authentication.getName());
         return new ResponseEntity<>(
                 HttpStatus.NO_CONTENT
         );

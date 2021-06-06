@@ -10,51 +10,56 @@ import com.dictionary.models.Word;
 import com.dictionary.models.dao.QuestionDao;
 import com.dictionary.service.QuestionService;
 import com.dictionary.service.WordService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
 
     private final WordService wordService;
+
+    private Random randWord;
+
+    private Random randSec;
+
+    public QuestionServiceImpl(WordService wordService) {
+        randWord = new Random();
+        randSec = new Random();
+        this.wordService = wordService;
+    }
 
     @Autowired
     QuestionDao questionDao;
 
     @Override
-    public Set<Question> createQuestionsForEnglish() {
+    public List<Question> createQuestionsForEnglish() {
         // question is in turkish, answer is in english
         List<Word> allWords = wordService.listAllWords();
-        Set<Question> questions = new HashSet<>();
+        List<Question> questions = new ArrayList<>();
 
-        Random rand = new Random();
-        rand.setSeed(123456789);
-        List<Word> words = new ArrayList<>();
-
-        for (int j = 0; j < 5; ) {
+        for (int j = 0; j < 5; j++) {
             Question question = new Question();
-            int randomIndex;
+            List<Word> words = new ArrayList<>();
+
             // randomly select 3 words
             for (int i = 0; i < 3; i++) {
-                randomIndex = rand.nextInt(allWords.size());
+                int randomIndex = randWord.nextInt(allWords.size());
                 words.add(allWords.get(randomIndex));
+                allWords.remove(randomIndex);
             }
 
             question.setQuestion(words.get(0).getTurkish());
             question.setAnswer(words.get(0).getEnglish());
 
             // randomly assigning choices
-            int ctrl = rand.nextInt(3);
+            int ctrl = randSec.nextInt(3);
+
             if (ctrl == 0) {
                 question.setPosAnsA(words.get(0).getEnglish());
                 question.setPosAnsB(words.get(1).getEnglish());
@@ -69,36 +74,35 @@ public class QuestionServiceImpl implements QuestionService {
                 question.setPosAnsC(words.get(0).getEnglish());
             }
 
-            if (questions.add(question))
-                j++;
+            questions.add(question);
         }
 
         return questions;
     }
 
     @Override
-    public Set<Question> createQuestionsForTurkish() {
+    public List<Question> createQuestionsForTurkish() {
         // question is in english, answer is in turkish
         List<Word> allWords = wordService.listAllWords();
-        Set<Question> questions = new HashSet<>();
+        List<Question> questions = new ArrayList<>();
 
-        Random rand = new Random();
-        rand.setSeed(123456789);
-        List<Word> words = new ArrayList<>();
-
-        for (int j = 0; j < 5; ) {
+        for (int j = 0; j < 5; j++) {
             Question question = new Question();
+            List<Word> words = new ArrayList<>();
 
             // randomly select 3 words
             for (int i = 0; i < 3; i++) {
-                int randomIndex = rand.nextInt(allWords.size());
+                int randomIndex = randWord.nextInt(allWords.size());
                 words.add(allWords.get(randomIndex));
+                allWords.remove(randomIndex);
             }
+
             question.setQuestion(words.get(0).getEnglish());
             question.setAnswer(words.get(0).getTurkish());
 
             // randomly assigning choices
-            int ctrl = rand.nextInt(3);
+            int ctrl = randSec.nextInt(3);
+
             if (ctrl == 0) {
                 question.setPosAnsA(words.get(0).getTurkish());
                 question.setPosAnsB(words.get(1).getTurkish());
@@ -113,10 +117,10 @@ public class QuestionServiceImpl implements QuestionService {
                 question.setPosAnsC(words.get(0).getTurkish());
             }
 
-            if (questions.add(question))
-                j++;
+            questions.add(question);
         }
 
         return questions;
     }
+
 }

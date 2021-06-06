@@ -19,8 +19,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ForeignKey;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(schema = "DICTIONARY", name = "QUIZ")
@@ -52,7 +52,7 @@ public class Quiz extends BaseModel {
             joinColumns = {@JoinColumn(name = "QUIZ_ID", foreignKey = @ForeignKey(name = "FK_QUIZ_QUESTIONS_QUIZ_ID"))},
             inverseJoinColumns = {@JoinColumn(name = "QUESTION_ID", foreignKey = @ForeignKey(name = "FK_QUIZ_QUESTIONS_QUESTION_ID"))}
     )
-    private Set<Question> questions = new HashSet<>();
+    private List<Question> questions = new ArrayList<>();
 
     // Constructors for word class
 

@@ -7,11 +7,11 @@ package com.dictionary.service.impl;
 
 import com.dictionary.models.Question;
 import com.dictionary.models.Quiz;
+import com.dictionary.models.User;
 import com.dictionary.models.dao.QuizDao;
 import com.dictionary.service.QuestionService;
 import com.dictionary.service.QuizService;
 import com.dictionary.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +22,19 @@ import java.util.Random;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class QuizServiceImpl implements QuizService {
 
-    private final UserService userRepository;
+    private final UserService userService;
 
-    private final QuestionService questionRepository;
+    private final QuestionService questionService;
+
+    private Random rand;
+
+    public QuizServiceImpl(UserService userService, QuestionService questionService) {
+        rand = new Random();
+        this.userService = userService;
+        this.questionService = questionService;
+    }
 
     @Autowired
     QuizDao quizDao;
@@ -37,13 +44,12 @@ public class QuizServiceImpl implements QuizService {
         Quiz quiz = new Quiz();
         quiz.setTakenAt(ZonedDateTime.now());
 
-        Random rand = new Random();
         int ctrl = rand.nextInt(2);
 
         if (ctrl == 1)
-            quiz.setQuestions(questionRepository.createQuestionsForEnglish());
+            quiz.setQuestions(questionService.createQuestionsForEnglish());
         else
-            quiz.setQuestions(questionRepository.createQuestionsForTurkish());
+            quiz.setQuestions(questionService.createQuestionsForTurkish());
 
         return quiz;
     }
@@ -89,10 +95,10 @@ public class QuizServiceImpl implements QuizService {
 
         return quizDao.saveAndFlush(retrievedQuiz);
 
-        //User currentUser = userRepository.findUserByEmail(/*Principal principal.getName()*/))
-        /*if (currentUser.getScore < quiz.getScore())
-            user.setBestScore(quiz.getScore());
-        userRepository.updateUser(currentUser.getEmail(), user);*/
+        /*User currentUser = userService.findUserByEmail();
+        if (currentUser.getScore < quiz.getScore())
+            currentUser.setBestScore(quiz.getScore());
+        userService.updateUser(currentUser.getEmail(), currentUser);*/
 
     }
 

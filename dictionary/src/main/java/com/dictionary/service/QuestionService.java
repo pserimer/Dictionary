@@ -7,12 +7,12 @@ package com.dictionary.service;
 
 import com.dictionary.models.Question;
 
-import java.util.Set;
+import java.util.List;
 
 public interface QuestionService {
 
-    Set<Question> createQuestionsForEnglish();
+    List<Question> createQuestionsForEnglish();
 
-    Set<Question> createQuestionsForTurkish();
+    List<Question> createQuestionsForTurkish();
 
 }
