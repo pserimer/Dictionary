@@ -111,6 +111,12 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public void deleteQuiz(Long quizId) {
+        Quiz quiz = quizDao.findById(quizId).orElseThrow(() -> new EntityNotFoundException("Quiz not found"));
+
+        for (Question question : quiz.getQuestions()) {
+            questionDao.delete(question);
+        }
+
         quizDao.deleteById(quizId);
     }
 }

@@ -5,8 +5,10 @@
 
 package com.dictionary.service.impl;
 
+import com.dictionary.models.User;
 import com.dictionary.models.Word;
 import com.dictionary.models.dao.WordDao;
+import com.dictionary.service.UserService;
 import com.dictionary.service.WordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WordServiceImpl implements WordService {
 
+    private final UserService userService;
+
     @Autowired
     WordDao wordDao;
 
@@ -35,7 +39,7 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
-    public Word translateToTurkish(Word word) throws IOException {
+    public Word translateToTurkish(Word word, String email) throws IOException {
         String urlStr = "https://script.google.com/macros/s/AKfycbxgCdZdIad69eqprFuLdgLFtDj9SbsrRvjn1QGIbHnW6heuZxuaVREAVmzibmRdTMiR/exec" +
                 "?q=" + URLEncoder.encode(word.getEnglish(), "UTF-8") +
                 "&target=" + "tr" +
@@ -55,11 +59,16 @@ public class WordServiceImpl implements WordService {
         in.close();
 
         word.setTurkish(response.toString());
+
+        User currentUser = userService.findUserByEmail(email);
+        currentUser.setNoOfWordsSearched(currentUser.getNoOfWordsSearched() + 1);
+        userService.updateUser(currentUser.getEmail(), currentUser);
+
         return wordDao.saveAndFlush(word);
     }
 
     @Override
-    public Word translateToEnglish(Word word) throws IOException {
+    public Word translateToEnglish(Word word, String email) throws IOException {
         String urlStr = "https://script.google.com/macros/s/AKfycbxgCdZdIad69eqprFuLdgLFtDj9SbsrRvjn1QGIbHnW6heuZxuaVREAVmzibmRdTMiR/exec" +
                 "?q=" + URLEncoder.encode(word.getTurkish(), "UTF-8") +
                 "&target=" + "en" +
@@ -79,11 +88,20 @@ public class WordServiceImpl implements WordService {
         in.close();
 
         word.setEnglish(response.toString());
+
+        User currentUser = userService.findUserByEmail(email);
+        currentUser.setNoOfWordsSearched(currentUser.getNoOfWordsSearched() + 1);
+        userService.updateUser(currentUser.getEmail(), currentUser);
+
         return wordDao.saveAndFlush(word);
     }
 
     @Override
-    public void deleteWord(Long wordId) {
+    public void deleteWord(Long wordId, String email) {
+        User currentUser = userService.findUserByEmail(email);
+        currentUser.setNoOfWordsSearched(currentUser.getNoOfWordsSearched() - 1);
+        userService.updateUser(currentUser.getEmail(), currentUser);
+
         wordDao.deleteById(wordId);
     }
 }

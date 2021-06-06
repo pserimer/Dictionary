@@ -7,6 +7,7 @@ package com.dictionary.service.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.dictionary.models.LoginReturn;
 import com.dictionary.models.User;
 import com.dictionary.models.dao.UserDao;
 import com.dictionary.service.UserService;
@@ -51,8 +52,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(User user) throws Exception {
+    public LoginReturn login(User user) throws Exception {
         User userControl = findUserByEmail(user.getEmail());
+        LoginReturn loginReturn = new LoginReturn();
 
         if (userControl != null) {
             if (BCrypt.checkpw(user.getPassword(), userControl.getPassword())) {
@@ -60,7 +62,10 @@ public class UserServiceImpl implements UserService {
                         .withSubject(user.getEmail())
                         .sign(Algorithm.HMAC512(SECRET.getBytes()));
 
-                return accessToken;
+                loginReturn.setToken(accessToken);
+                loginReturn.setEmail(user.getEmail());
+                return loginReturn;
+
             } else throw new Exception("mismatch");
         } else throw new Exception("user not found");
     }
@@ -68,6 +73,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(String email, User user) {
         User retrievedUser = findUserByEmail(email);
+
         if (user.getBestScore() != null)
             retrievedUser.setBestScore(user.getBestScore());
         if (user.getNoOfWordsSearched() != null)

@@ -34,25 +34,27 @@ public class WordController {
         );
     }
 
-    @RequestMapping(value = "/translate-turkish", method = RequestMethod.POST)
-    public ResponseEntity<Word> translateToTurkish(@RequestBody Word word) throws IOException {
+    @RequestMapping(value = "/translate-turkish/{email}", method = RequestMethod.POST)
+    public ResponseEntity<Word> translateToTurkish(@PathVariable String email,
+                                                   @RequestBody Word word) throws IOException {
         return new ResponseEntity<>(
-                wordService.translateToTurkish(word),
+                wordService.translateToTurkish(word, email),
                 HttpStatus.OK
         );
     }
 
-    @RequestMapping(value = "/translate-english", method = RequestMethod.POST)
-    public ResponseEntity<Word> translateToEnglish(@RequestBody Word word) throws IOException {
+    @RequestMapping(value = "/translate-english/{email}", method = RequestMethod.POST)
+    public ResponseEntity<Word> translateToEnglish(@PathVariable String email,
+                                                   @RequestBody Word word) throws IOException {
         return new ResponseEntity<>(
-                wordService.translateToEnglish(word),
+                wordService.translateToEnglish(word, email),
                 HttpStatus.OK
         );
     }
 
-    @RequestMapping(path = "/{wordId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteWord(@PathVariable Long wordId) {
-        wordService.deleteWord(wordId);
+    @RequestMapping(path = "/{wordId}/{email}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteWord(@PathVariable Long wordId, @PathVariable String email) {
+        wordService.deleteWord(wordId, email);
         return new ResponseEntity<>(
                 HttpStatus.NO_CONTENT
         );

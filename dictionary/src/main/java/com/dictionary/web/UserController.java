@@ -5,6 +5,7 @@
 
 package com.dictionary.web;
 
+import com.dictionary.models.LoginReturn;
 import com.dictionary.models.User;
 import com.dictionary.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<String> login(@RequestBody User user) throws Exception {
+    public ResponseEntity<LoginReturn> login(@RequestBody User user) throws Exception {
         return new ResponseEntity<>(
                 userService.login(user),
                 HttpStatus.OK

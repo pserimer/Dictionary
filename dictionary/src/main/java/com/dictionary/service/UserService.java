@@ -5,6 +5,7 @@
 
 package com.dictionary.service;
 
+import com.dictionary.models.LoginReturn;
 import com.dictionary.models.User;
 
 public interface UserService {
@@ -13,7 +14,7 @@ public interface UserService {
 
     User register(User user) throws Exception;
 
-    String login(User user) throws Exception;
+    LoginReturn login(User user) throws Exception;
 
     User updateUser(String email, User user);
 

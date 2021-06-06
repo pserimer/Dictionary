@@ -14,9 +14,10 @@ public interface WordService {
 
     List<Word> listAllWords();
 
-    Word translateToTurkish(Word word) throws IOException;
+    Word translateToTurkish(Word word, String email) throws IOException;
 
-    Word translateToEnglish(Word word) throws IOException;
+    Word translateToEnglish(Word word, String email) throws IOException;
 
-    void deleteWord(Long wordId);
+    void deleteWord(Long wordId, String email);
+
 }
